@@ -18,6 +18,12 @@ class HtmlController extends BaseController {
     // The markdown to html converter
     private SimpleMarkdownHtml $mdToHtml;
 
+    // Loaded static pages indexed by slug
+    private array $pages = [];
+
+    // Menu markup snippet
+    private string $menu = '';
+
     /**
      * Handles HTML content requests.
      *
@@ -31,9 +37,23 @@ class HtmlController extends BaseController {
 
         $this->templater->setTemplate($this->file->read('app/assets/template.html'));
 
+        // assign defaults
+        $this->templater->assign('title', 'Delegating App Base');
+        $this->templater->assign('description', '');
+
+        // load menu and pages
+        $this->loadPages();
+        $this->templater->assign('menu', $this->menu);
+
         try {
-            $this->delegateRoute('/!', [$this, 'displayReadme'], $request);
+            $this->delegateRoute('/readme!', [$this, 'displayReadme'], $request);
             $this->delegateRoute('/license!', [$this, 'displayLicense'], $request);
+
+            foreach ($this->pages as $slug => $page) {
+                $this->delegateRoute($slug . '!', function($req) use ($page) {
+                    return $this->displayPage($page);
+                }, $request);
+            }
             
             $path = $request['route'];
             throw new Error(
@@ -58,6 +78,8 @@ class HtmlController extends BaseController {
     public function displayReadme($request): bool {
         $readme = $this->file->read('README.md');
         $readmeHtml = $this->mdToHtml->parse($readme);
+        $this->templater->assign('title', 'README');
+        $this->templater->assign('description', '');
         $this->templater->assign('content', $readmeHtml);
 
         header('Content-Type: text/html; charset=UTF-8');
@@ -68,6 +90,8 @@ class HtmlController extends BaseController {
     public function displayLicense($request): bool {
         $license = $this->file->read('LICENSE.md');
         $licenseHtml = $this->mdToHtml->parse($license);
+        $this->templater->assign('title', 'License');
+        $this->templater->assign('description', '');
         $this->templater->assign('content', $licenseHtml);
 
         header('Content-Type: text/html; charset=UTF-8');
@@ -77,11 +101,55 @@ class HtmlController extends BaseController {
 
     public function displayError($error): never{
         $errorHtml = "";
+        $this->templater->assign('title', 'Error');
+        $this->templater->assign('description', '');
         $this->templater->assign('content', $errorHtml);
 
         header('Content-Type: text/html; charset=UTF-8');
         http_response_code($error->getHttpCode());
         echo $this->templater->render();
         die();
+    }
+
+    private function loadPages(): void {
+        $files = glob('app/pages/*.html');
+        foreach ($files as $path) {
+            $name = basename($path);
+            if ($name === 'menu.html') {
+                $this->menu = file_get_contents($path);
+                continue;
+            }
+            $contents = file_get_contents($path);
+            if (preg_match('/^---\s*(.*?)\s*---\s*(.*)$/s', $contents, $matches)) {
+                $meta = $this->parseFrontMatter($matches[1]);
+                $slug = $meta['slug'] ?? '/' . pathinfo($name, PATHINFO_FILENAME);
+                $this->pages[$slug] = [
+                    'title' => $meta['title'] ?? 'Delegating App Base',
+                    'description' => $meta['description'] ?? '',
+                    'html' => $matches[2]
+                ];
+            }
+        }
+    }
+
+    private function parseFrontMatter(string $text): array {
+        $data = [];
+        $lines = preg_split('/\r?\n/', trim($text));
+        foreach ($lines as $line) {
+            if (preg_match('/^([A-Za-z0-9_-]+):\s*"?(.*?)"?$/', $line, $m)) {
+                $data[$m[1]] = $m[2];
+            }
+        }
+        return $data;
+    }
+
+    private function displayPage(array $page): bool {
+        $this->templater->assign('title', $page['title']);
+        $this->templater->assign('description', $page['description']);
+        $this->templater->assign('content', $page['html']);
+
+        header('Content-Type: text/html; charset=UTF-8');
+        echo $this->templater->render();
+        return true;
     }
 }
