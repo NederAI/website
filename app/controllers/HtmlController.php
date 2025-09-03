@@ -112,14 +112,16 @@ class HtmlController extends BaseController {
     }
 
     private function loadPages(): void {
-        $files = glob('app/pages/*.html');
-        foreach ($files as $path) {
-            $name = basename($path);
-            if ($name === 'menu.html') {
-                $this->menu = file_get_contents($path);
+        $files = $this->file->listDirectory('app/pages');
+        foreach ($files as $name) {
+            if (pathinfo($name, PATHINFO_EXTENSION) !== 'html') {
                 continue;
             }
-            $contents = file_get_contents($path);
+            if ($name === 'menu.html') {
+                $this->menu = $this->file->read('app/pages/' . $name);
+                continue;
+            }
+            $contents = $this->file->read('app/pages/' . $name);
             if (preg_match('/^---\s*(.*?)\s*---\s*(.*)$/s', $contents, $matches)) {
                 $meta = $this->parseFrontMatter($matches[1]);
                 $slug = $meta['slug'] ?? '/' . pathinfo($name, PATHINFO_FILENAME);
