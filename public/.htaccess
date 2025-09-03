@@ -1,0 +1,5 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Redirect all requests to index.php
+RewriteRule . index.php [L,QSA]

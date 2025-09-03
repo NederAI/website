@@ -1,0 +1,212 @@
+/* CSS Reset */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Base typography */
+body {
+  line-height: 1.6;
+  font-family: sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Light Theme Defaults */
+:root {
+  /* Branding */
+  --theme-color: #df8020;
+  
+  /* Colors */
+  --background-color: #fefefe;
+  --text-color: #333;
+  --heading-color: var(--theme-color);
+  --strong-color: #222;
+  --muted-text: #555;
+  --border-color: #e0e0e0;
+  --link-color: var(--theme-color);
+  --accent-color: #ddd;
+}
+
+/* Dark Theme Overrides */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Branding remains the same */
+    --theme-color: #df8020;
+    
+    /* Colors */
+    --background-color: #181828;
+    --text-color: #ddd;
+    --heading-color: var(--theme-color);
+    --strong-color: #fff;
+    --muted-text: #aaa;
+    --border-color: #333;
+    --link-color: var(--theme-color);
+    --accent-color: #222;
+  }
+}
+
+/* Global Page Styles */
+html {
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  padding: 20px;
+}
+
+/* Link Styling */
+a {
+  color: var(--link-color);
+  font-weight: bold;
+}
+
+/* Container for main content */
+main {
+  max-width: 960px;
+  margin: 80px auto 40px;
+  padding: 20px;
+}
+
+/* Section Styling */
+section {
+  margin-bottom: 80px;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--heading-color);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+h2 {
+  font-size: 2rem;
+  margin-bottom: 0.8rem;
+}
+h3 {
+  font-size: 1.75rem;
+  margin-bottom: 0.8rem;
+}
+
+/* Paragraphs and Lists */
+p, li {
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+}
+ul, ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+li::marker {
+  color: var(--theme-color);
+}
+
+/* Code Blocks and Inline Code */
+code {
+  font-family: monospace;
+  background-color: var(--accent-color);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+}
+
+/* Logo Container */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.logo img {
+  width: 40px;
+  height: auto;
+}
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--strong-color);
+}
+
+/* Emphasis */
+em, strong {
+  color: var(--strong-color);
+}
+
+/* Buttons */
+button,
+input[type="submit"] {
+  background-color: var(--theme-color);
+  color: #fff;
+  border: none;
+  padding: 0.6em 1.2em;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+button:hover,
+input[type="submit"]:hover {
+  background-color: darken(var(--theme-color), 10%);}
+/* Authentication Overlay */
+.auth-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.auth-modal {
+  position: relative;
+  background: var(--background-color);
+  color: var(--text-color);
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  max-width: 90%;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+.auth-modal .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--text-color);
+  cursor: pointer;
+}
+.auth-modal label {
+  display: block;
+  margin-top: 0.5rem;
+}
+.auth-modal input {
+  width: 100%;
+  padding: 0.4rem;
+  margin-bottom: 0.8rem;
+}
+.auth-modal .tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+.auth-modal .message {
+  color: var(--muted-text);
+  margin-bottom: 0.5rem;
+}
