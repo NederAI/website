@@ -1,0 +1,33 @@
+<!-- Header / Navigatie (CMS-fragment) -->
+<header class="c-header" role="banner">
+  <div class="c-header__inner l-container">
+    <a class="c-brand" href="/" aria-label="NederAI home">
+      <img src="/assets/logo.svg" alt="" width="28" height="28" />
+      <span>NederAI</span>
+    </a>
+
+    <!-- Mobile toggle (optioneel) -->
+    <button class="c-btn c-btn--icon c-btn--secondary" aria-controls="main-nav" aria-expanded="false" aria-label="Menu" onclick="
+      const n=document.getElementById('main-nav');
+      const e=this.getAttribute('aria-expanded')==='true';
+      this.setAttribute('aria-expanded', String(!e));
+      n.toggleAttribute('hidden');
+    ">
+      ☰
+    </button>
+
+    <nav id="main-nav" class="c-nav" aria-label="Hoofdmenu" hidden>
+      <a href="/missie-en-waarden">Missie &amp; Waarden</a>
+      <a href="/organisatie">Organisatie</a>
+      <a href="/projecten-nieuws">Projecten &amp; Nieuws</a>
+      <a href="/documenten">Documenten</a>
+      <a href="/samenwerken">Samenwerken</a>
+      <a href="/klokkenluiders">Klokkenluiders</a>
+      <a href="/contact">Contact</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Tip: markeer de actieve link in je CMS met aria-current="page" -->
+<!-- Voorbeeld: <a href="/documenten" aria-current="page">Documenten</a> -->
