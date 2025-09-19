@@ -1,6 +1,6 @@
 {
-  "name": "Delegating App Base",
-  "short_name": "DAB",
+  "name": "NederAI",
+  "short_name": "NederAI",
   "icons": [
     {
       "src": "/assets/branding/web-app-manifest-192x192.png",
@@ -15,7 +15,7 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#df8020",
-  "background_color": "#181828",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
   "display": "standalone"
 }
