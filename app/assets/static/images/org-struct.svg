@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" type="text/css"?><svg
+   id="graph-1201"
+   width="767.28076"
+   height="367.49625"
+   preserveAspectRatio="xMidYMid"
+   viewBox="-10 -10 767.28076 367.49625"
+   class="flowchart"
+   style="overflow:hidden"
+   role="graphics-document document"
+   aria-roledescription="flowchart-v2"
+   version="1.1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <defs
+     id="defs27" />
+  <g
+     id="viewport-20250920071312318"
+     class="svg-pan-zoom_viewport"
+     transform="matrix(0.80253172,0,0,0.80253172,-6.4202502,-5.6177219)">
+    <style
+       id="style1">#graph-1201{font-family:&quot;trebuchet ms&quot;,verdana,arial,sans-serif;font-size:16px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#graph-1201 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#graph-1201 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#graph-1201 .error-icon{fill:hsl(220.5882352941, 100%, 98.3333333333%);}#graph-1201 .error-text{fill:rgb(8.5000000002, 5.7500000001, 0);stroke:rgb(8.5000000002, 5.7500000001, 0);}#graph-1201 .edge-thickness-normal{stroke-width:1px;}#graph-1201 .edge-thickness-thick{stroke-width:3.5px;}#graph-1201 .edge-pattern-solid{stroke-dasharray:0;}#graph-1201 .edge-thickness-invisible{stroke-width:0;fill:none;}#graph-1201 .edge-pattern-dashed{stroke-dasharray:3;}#graph-1201 .edge-pattern-dotted{stroke-dasharray:2;}#graph-1201 .marker{fill:#0b0b0b;stroke:#0b0b0b;}#graph-1201 .marker.cross{stroke:#0b0b0b;}#graph-1201 svg{font-family:&quot;trebuchet ms&quot;,verdana,arial,sans-serif;font-size:16px;}#graph-1201 p{margin:0;}#graph-1201 .label{font-family:&quot;trebuchet ms&quot;,verdana,arial,sans-serif;color:#333;}#graph-1201 .cluster-label text{fill:rgb(8.5000000002, 5.7500000001, 0);}#graph-1201 .cluster-label span{color:rgb(8.5000000002, 5.7500000001, 0);}#graph-1201 .cluster-label span p{background-color:transparent;}#graph-1201 .label text,#graph-1201 span{fill:#333;color:#333;}#graph-1201 .node rect,#graph-1201 .node circle,#graph-1201 .node ellipse,#graph-1201 .node polygon,#graph-1201 .node path{fill:#fff4dd;stroke:hsl(40.5882352941, 60%, 83.3333333333%);stroke-width:1px;}#graph-1201 .rough-node .label text,#graph-1201 .node .label text,#graph-1201 .image-shape .label,#graph-1201 .icon-shape .label{text-anchor:middle;}#graph-1201 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#graph-1201 .rough-node .label,#graph-1201 .node .label,#graph-1201 .image-shape .label,#graph-1201 .icon-shape .label{text-align:center;}#graph-1201 .node.clickable{cursor:pointer;}#graph-1201 .root .anchor path{fill:#0b0b0b!important;stroke-width:0;stroke:#0b0b0b;}#graph-1201 .arrowheadPath{fill:#0b0b0b;}#graph-1201 .edgePath .path{stroke:#0b0b0b;stroke-width:2.0px;}#graph-1201 .flowchart-link{stroke:#0b0b0b;fill:none;}#graph-1201 .edgeLabel{background-color:hsl(-79.4117647059, 100%, 93.3333333333%);text-align:center;}#graph-1201 .edgeLabel p{background-color:hsl(-79.4117647059, 100%, 93.3333333333%);}#graph-1201 .edgeLabel rect{opacity:0.5;background-color:hsl(-79.4117647059, 100%, 93.3333333333%);fill:hsl(-79.4117647059, 100%, 93.3333333333%);}#graph-1201 .labelBkg{background-color:rgba(243.9999999999, 220.9999999998, 255, 0.5);}#graph-1201 .cluster rect{fill:hsl(220.5882352941, 100%, 98.3333333333%);stroke:hsl(220.5882352941, 60%, 88.3333333333%);stroke-width:1px;}#graph-1201 .cluster text{fill:rgb(8.5000000002, 5.7500000001, 0);}#graph-1201 .cluster span{color:rgb(8.5000000002, 5.7500000001, 0);}#graph-1201 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:&quot;trebuchet ms&quot;,verdana,arial,sans-serif;font-size:12px;background:hsl(220.5882352941, 100%, 98.3333333333%);border:1px solid hsl(220.5882352941, 60%, 88.3333333333%);border-radius:2px;pointer-events:none;z-index:100;}#graph-1201 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#graph-1201 rect.text{fill:none;stroke-width:0;}#graph-1201 .icon-shape,#graph-1201 .image-shape{background-color:hsl(-79.4117647059, 100%, 93.3333333333%);text-align:center;}#graph-1201 .icon-shape p,#graph-1201 .image-shape p{background-color:hsl(-79.4117647059, 100%, 93.3333333333%);padding:2px;}#graph-1201 .icon-shape rect,#graph-1201 .image-shape rect{opacity:0.5;background-color:hsl(-79.4117647059, 100%, 93.3333333333%);fill:hsl(-79.4117647059, 100%, 93.3333333333%);}#graph-1201 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#graph-1201 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#graph-1201 :root{--mermaid-font-family:&quot;trebuchet ms&quot;,verdana,arial,sans-serif;}#graph-1201 .stichting&gt;*{fill:#f9f3d2!important;stroke:#b59d00!important;stroke-width:2px!important;}#graph-1201 .stichting span{fill:#f9f3d2!important;stroke:#b59d00!important;stroke-width:2px!important;}#graph-1201 .alliance&gt;*{fill:#e6f4ff!important;stroke:#1a73e8!important;stroke-width:2px!important;}#graph-1201 .alliance span{fill:#e6f4ff!important;stroke:#1a73e8!important;stroke-width:2px!important;}#graph-1201 .werk&gt;*{fill:#e8f5e9!important;stroke:#2e7d32!important;stroke-width:1.5px!important;}#graph-1201 .werk span{fill:#e8f5e9!important;stroke:#2e7d32!important;stroke-width:1.5px!important;}#graph-1201 .spin&gt;*{fill:#f3e5f5!important;stroke:#6a1b9a!important;stroke-dasharray:5 3!important;stroke-width:1.5px!important;}#graph-1201 .spin span{fill:#f3e5f5!important;stroke:#6a1b9a!important;stroke-dasharray:5 3!important;stroke-width:1.5px!important;}</style>
+    <g
+       id="g27">
+      <marker
+         id="graph-1201_flowchart-v2-pointEnd"
+         class="marker flowchart-v2"
+         viewBox="0 0 10 10"
+         refX="5"
+         refY="5"
+         markerUnits="userSpaceOnUse"
+         markerWidth="8"
+         markerHeight="8"
+         orient="auto">
+        <path
+           d="M 0,0 10,5 0,10 Z"
+           class="arrowMarkerPath"
+           style="stroke-width:1px;stroke-dasharray:1px, 0px"
+           id="path1" />
+      </marker>
+      <marker
+         id="graph-1201_flowchart-v2-pointStart"
+         class="marker flowchart-v2"
+         viewBox="0 0 10 10"
+         refX="4.5"
+         refY="5"
+         markerUnits="userSpaceOnUse"
+         markerWidth="8"
+         markerHeight="8"
+         orient="auto">
+        <path
+           d="m 0,5 10,5 V 0 Z"
+           class="arrowMarkerPath"
+           style="stroke-width:1px;stroke-dasharray:1px, 0px"
+           id="path2" />
+      </marker>
+      <marker
+         id="graph-1201_flowchart-v2-circleEnd"
+         class="marker flowchart-v2"
+         viewBox="0 0 10 10"
+         refX="11"
+         refY="5"
+         markerUnits="userSpaceOnUse"
+         markerWidth="11"
+         markerHeight="11"
+         orient="auto">
+        <circle
+           cx="5"
+           cy="5"
+           r="5"
+           class="arrowMarkerPath"
+           style="stroke-width:1px;stroke-dasharray:1px, 0px"
+           id="circle2" />
+      </marker>
+      <marker
+         id="graph-1201_flowchart-v2-circleStart"
+         class="marker flowchart-v2"
+         viewBox="0 0 10 10"
+         refX="-1"
+         refY="5"
+         markerUnits="userSpaceOnUse"
+         markerWidth="11"
+         markerHeight="11"
+         orient="auto">
+        <circle
+           cx="5"
+           cy="5"
+           r="5"
+           class="arrowMarkerPath"
+           style="stroke-width:1px;stroke-dasharray:1px, 0px"
+           id="circle3" />
+      </marker>
+      <marker
+         id="graph-1201_flowchart-v2-crossEnd"
+         class="marker cross flowchart-v2"
+         viewBox="0 0 11 11"
+         refX="12"
+         refY="5.1999998"
+         markerUnits="userSpaceOnUse"
+         markerWidth="11"
+         markerHeight="11"
+         orient="auto">
+        <path
+           d="m 1,1 9,9 m 0,-9 -9,9"
+           class="arrowMarkerPath"
+           style="stroke-width:2px;stroke-dasharray:1px, 0px"
+           id="path3" />
+      </marker>
+      <marker
+         id="graph-1201_flowchart-v2-crossStart"
+         class="marker cross flowchart-v2"
+         viewBox="0 0 11 11"
+         refX="-1"
+         refY="5.1999998"
+         markerUnits="userSpaceOnUse"
+         markerWidth="11"
+         markerHeight="11"
+         orient="auto">
+        <path
+           d="m 1,1 9,9 m 0,-9 -9,9"
+           class="arrowMarkerPath"
+           style="stroke-width:2px;stroke-dasharray:1px, 0px"
+           id="path4" />
+      </marker>
+      <g
+         class="root"
+         id="g26">
+        <g
+           class="clusters"
+           id="g5">
+          <g
+             class="cluster"
+             id="W"
+             data-look="classic">
+            <rect
+               x="8"
+               y="264"
+               width="627.73334"
+               height="176"
+               id="rect4" />
+            <g
+               class="cluster-label"
+               transform="translate(247.04167,264)"
+               id="g4">
+              <foreignObject
+                 width="149.64999389648438"
+                 height="24">
+                <xhtml:div
+                   style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;">
+                  <xhtml:span
+                     class="nodeLabel">
+                    <xhtml:p>Werkmaatschappijen</xhtml:p>
+                  </xhtml:span>
+                </xhtml:div>
+              </foreignObject>
+            </g>
+          </g>
+        </g>
+        <g
+           class="edgePaths"
+           id="g6">
+          <path
+             d="m 476.867,62 v 4.167 c 0,4.166 0,12.5 0,20.166 0,7.667 0,14.667 0,18.167 v 3.5"
+             id="L_A_B_0"
+             class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+             data-edge="true"
+             data-et="edge"
+             data-id="L_A_B_0"
+             data-points="W3sieCI6NDc2Ljg2NjY2ODcwMTE3MTksInkiOjYyfSx7IngiOjQ3Ni44NjY2Njg3MDExNzE5LCJ5Ijo4N30seyJ4Ijo0NzYuODY2NjY4NzAxMTcxOSwieSI6MTEyfV0="
+             marker-end="url(#graph-1201_flowchart-v2-pointEnd)" />
+          <path
+             d="m 364.217,179.175 -31.87,7.971 c -31.869,7.971 -95.608,23.912 -127.478,38.05 C 173,239.333 173,251.667 173,261.333 173,271 173,278 173,281.5 v 3.5"
+             id="L_B_C1_0"
+             class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+             data-edge="true"
+             data-et="edge"
+             data-id="L_B_C1_0"
+             data-points="W3sieCI6MzY0LjIxNjY2NzE3NTI5Mjk3LCJ5IjoxNzkuMTc0ODU3NTg2NTg5MTh9LHsieCI6MTczLCJ5IjoyMjd9LHsieCI6MTczLCJ5IjoyNjR9LHsieCI6MTczLCJ5IjoyODl9XQ=="
+             marker-end="url(#graph-1201_flowchart-v2-pointEnd)" />
+          <path
+             d="m 476.867,190 v 6.167 c 0,6.166 0,18.5 0,30.833 0,12.333 0,24.667 0,38.333 0,13.667 0,28.667 0,36.167 v 7.5"
+             id="L_B_C2_0"
+             class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+             data-edge="true"
+             data-et="edge"
+             data-id="L_B_C2_0"
+             data-points="W3sieCI6NDc2Ljg2NjY2ODcwMTE3MTksInkiOjE5MH0seyJ4Ijo0NzYuODY2NjY4NzAxMTcxOSwieSI6MjI3fSx7IngiOjQ3Ni44NjY2Njg3MDExNzE5LCJ5IjoyNjR9LHsieCI6NDc2Ljg2NjY2ODcwMTE3MTksInkiOjMxM31d"
+             marker-end="url(#graph-1201_flowchart-v2-pointEnd)" />
+          <path
+             d="m 589.517,177.122 35.848,8.313 c 35.849,8.313 107.546,24.939 143.395,39.419 35.848,14.479 35.848,26.813 35.926,41.813 0.077,15 0.232,32.666 0.31,41.5 l 0.077,8.833"
+             id="L_B_S_0"
+             class="edge-thickness-normal edge-pattern-dotted edge-thickness-normal edge-pattern-solid flowchart-link"
+             data-edge="true"
+             data-et="edge"
+             data-id="L_B_S_0"
+             data-points="W3sieCI6NTg5LjUxNjY3MDIyNzA1MDgsInkiOjE3Ny4xMjI0MDM1MDcyOTY3OH0seyJ4Ijo4MDQuNjA4MzM3NDAyMzQzOCwieSI6MjI3fSx7IngiOjgwNC42MDgzMzc0MDIzNDM4LCJ5IjoyNjR9LHsieCI6ODA1LjEwODMzNzQwMjM0MzgsInkiOjMyMX1d"
+             marker-end="url(#graph-1201_flowchart-v2-pointEnd)" />
+        </g>
+        <g
+           class="edgeLabels"
+           id="g15">
+          <g
+             class="edgeLabel"
+             id="g8">
+            <g
+               class="label"
+               data-id="L_A_B_0"
+               id="g7">
+              <foreignObject
+                 width="0"
+                 height="0">
+                <xhtml:div
+                   style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"
+                   class="labelBkg">
+                  <xhtml:span
+                     class="edgeLabel" />
+                </xhtml:div>
+              </foreignObject>
+            </g>
+          </g>
+          <g
+             class="edgeLabel"
+             id="g10">
+            <g
+               class="label"
+               data-id="L_B_C1_0"
+               id="g9">
+              <foreignObject
+                 width="0"
+                 height="0">
+                <xhtml:div
+                   style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"
+                   class="labelBkg">
+                  <xhtml:span
+                     class="edgeLabel" />
+                </xhtml:div>
+              </foreignObject>
+            </g>
+          </g>
+          <g
+             class="edgeLabel"
+             id="g12">
+            <g
+               class="label"
+               data-id="L_B_C2_0"
+               id="g11">
+              <foreignObject
+                 width="0"
+                 height="0">
+                <xhtml:div
+                   style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"
+                   class="labelBkg">
+                  <xhtml:span
+                     class="edgeLabel" />
+                </xhtml:div>
+              </foreignObject>
+            </g>
+          </g>
+          <g
+             class="edgeLabel"
+             transform="translate(804.60834,227)"
+             id="g14">
+            <g
+               class="label"
+               data-id="L_B_S_0"
+               transform="translate(-40.658333,-12)"
+               id="g13">
+              <foreignObject
+                 width="81.31666564941406"
+                 height="24">
+                <xhtml:div
+                   style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"
+                   class="labelBkg">
+                  <xhtml:span
+                     class="edgeLabel">
+                    <xhtml:p>kan starten</xhtml:p>
+                  </xhtml:span>
+                </xhtml:div>
+              </foreignObject>
+            </g>
+          </g>
+        </g>
+        <g
+           class="nodes"
+           id="g25">
+          <g
+             class="node default stichting"
+             id="flowchart-A-0"
+             transform="translate(476.86667,35)">
+            <rect
+               class="basic label-container"
+               style="fill:#f9f3d2 !important;stroke:#b59d00 !important;stroke-width:2px !important"
+               x="-95.083336"
+               y="-27"
+               width="190.16667"
+               height="54"
+               id="rect15" />
+            <g
+               class="label"
+               transform="translate(-65.083336,-12)"
+               id="g16">
+              <rect
+                 id="rect16"
+                 width="0"
+                 height="0"
+                 x="0"
+                 y="0" />
+              <foreignObject
+                 width="130.1666717529297"
+                 height="24">
+                <xhtml:div
+                   style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;">
+                  <xhtml:span
+                     class="nodeLabel">
+                    <xhtml:p>
+                      <xhtml:strong>Stichting NederAI</xhtml:strong>
+                    </xhtml:p>
+                  </xhtml:span>
+                </xhtml:div>
+              </foreignObject>
+            </g>
+          </g>
+          <g
+             class="node default alliance"
+             id="flowchart-B-1"
+             transform="translate(476.86667,151)">
+            <rect
+               class="basic label-container"
+               style="fill:#e6f4ff !important;stroke:#1a73e8 !important;stroke-width:2px !important"
+               x="-112.65"
+               y="-39"
+               width="225.3"
+               height="78"
+               id="rect17" />
+            <g
+               class="label"
+               transform="translate(-82.650002,-24)"
+               id="g18">
+              <rect
+                 id="rect18"
+                 width="0"
+                 height="0"
+                 x="0"
+                 y="0" />
+              <foreignObject
+                 width="165.3000030517578"
+                 height="48">
+                <xhtml:div
+                   style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;">
+                  <xhtml:span
+                     class="nodeLabel">
+                    <xhtml:p><xhtml:strong>NederAI Alliance B.V.</xhtml:strong>
+<xhtml:br />
+houdster &amp; coördinatie</xhtml:p>
+                  </xhtml:span>
+                </xhtml:div>
+              </foreignObject>
+            </g>
+          </g>
+          <g
+             class="node default werk"
+             id="flowchart-C1-2"
+             transform="translate(173,352)">
+            <rect
+               class="basic label-container"
+               style="fill:#e8f5e9 !important;stroke:#2e7d32 !important;stroke-width:1.5px !important"
+               x="-130"
+               y="-63"
+               width="260"
+               height="126"
+               id="rect19" />
+            <g
+               class="label"
+               transform="translate(-100,-48)"
+               id="g20">
+              <rect
+                 id="rect20"
+                 width="0"
+                 height="0"
+                 x="0"
+                 y="0" />
+              <foreignObject
+                 width="200"
+                 height="96">
+                <xhtml:div
+                   style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;">
+                  <xhtml:span
+                     class="nodeLabel">
+                    <xhtml:p><xhtml:strong>NederAI Institute B.V.</xhtml:strong>
+<xhtml:br />
+onderzoek, onderwijs, maatschappelijke projecten</xhtml:p>
+                  </xhtml:span>
+                </xhtml:div>
+              </foreignObject>
+            </g>
+          </g>
+          <g
+             class="node default werk"
+             id="flowchart-C2-3"
+             transform="translate(476.86667,352)">
+            <rect
+               class="basic label-container"
+               style="fill:#e8f5e9 !important;stroke:#2e7d32 !important;stroke-width:1.5px !important"
+               x="-123.86667"
+               y="-39"
+               width="247.73334"
+               height="78"
+               id="rect21" />
+            <g
+               class="label"
+               transform="translate(-93.866669,-24)"
+               id="g22">
+              <rect
+                 id="rect22"
+                 width="0"
+                 height="0"
+                 x="0"
+                 y="0" />
+              <foreignObject
+                 width="187.73333740234375"
+                 height="48">
+                <xhtml:div
+                   style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;">
+                  <xhtml:span
+                     class="nodeLabel">
+                    <xhtml:p><xhtml:strong>NederAI Commercial B.V.</xhtml:strong>
+<xhtml:br />
+marktactiviteiten</xhtml:p>
+                  </xhtml:span>
+                </xhtml:div>
+              </foreignObject>
+            </g>
+          </g>
+          <g
+             class="node default spin"
+             id="flowchart-S-4"
+             transform="translate(804.60834,352)">
+            <g
+               class="basic label-container"
+               id="g23">
+              <path
+                 d="m -118.125,-31.5 c 33.982055,0 67.96411,0 118.125,0 26.679937,0 53.359874,0 118.125,0 3.59616,7.192313 7.19231,14.384625 15.75,31.5 -3.52725,7.0544996 -7.0545,14.108999 -15.75,31.5 -41.673316,0 -83.346632,0 -118.125,0 -40.340065,0 -80.680131,0 -118.125,0 -5.79785,-11.595708 -11.59571,-23.1914164 -15.75,-31.5 4.93558,-9.8711603 9.87116,-19.742321 15.75,-31.5"
+                 stroke="none"
+                 stroke-width="0"
+                 fill="#f3e5f5"
+                 style="fill:#f3e5f5 !important;stroke:#6a1b9a !important;stroke-width:1.5px !important;stroke-dasharray:5, 3 !important"
+                 id="path22" />
+              <path
+                 d="m -118.125,-31.5 c 38.368975,0 76.73795,0 118.125,0 m -118.125,0 c 36.28432,0 72.56864,0 118.125,0 m 0,0 c 28.228535,0 56.457069,0 118.125,0 M 0,-31.5 c 43.500304,0 87.000607,0 118.125,0 m 0,0 c 4.02599,8.051989 8.05199,16.103979 15.75,31.5 m -15.75,-31.5 c 4.15604,8.31207 8.31207,16.624141 15.75,31.5 m 0,0 c -5.22676,10.453521 -10.45352,20.907041 -15.75,31.5 M 133.875,0 c -5.86193,11.723862 -11.72386,23.447724 -15.75,31.5 m 0,0 c -26.042926,0 -52.085852,0 -118.125,0 m 118.125,0 c -44.601401,0 -89.202802,0 -118.125,0 m 0,0 c -44.701251,0 -89.402501,0 -118.125,0 M 0,31.5 c -25.013038,0 -50.026076,0 -118.125,0 m 0,0 C -123.94529,19.859424 -129.76558,8.2188487 -133.875,0 m 15.75,31.5 c -4.02312,-8.046234 -8.04623,-16.092468 -15.75,-31.5 m 0,0 c 5.1783,-10.356598 10.3566,-20.713195 15.75,-31.5 M -133.875,0 c 5.08822,-10.176446 10.17645,-20.352892 15.75,-31.5"
+                 stroke="#6a1b9a"
+                 stroke-width="1.5"
+                 fill="none"
+                 stroke-dasharray="5 3"
+                 style="fill:#f3e5f5 !important;stroke:#6a1b9a !important;stroke-width:1.5px !important;stroke-dasharray:5, 3 !important"
+                 id="path23" />
+            </g>
+            <g
+               class="label"
+               transform="translate(-96,-24)"
+               id="g24">
+              <rect
+                 id="rect23"
+                 width="0"
+                 height="0"
+                 x="0"
+                 y="0" />
+              <foreignObject
+                 width="192"
+                 height="48">
+                <xhtml:div
+                   style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;">
+                  <xhtml:span
+                     class="nodeLabel">
+                    <xhtml:p><xhtml:strong>Spin-offs &amp; deelnemingen</xhtml:strong>
+<xhtml:br />
+gestart door Alliance</xhtml:p>
+                  </xhtml:span>
+                </xhtml:div>
+              </foreignObject>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
