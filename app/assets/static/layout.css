@@ -1247,9 +1247,12 @@ pre {
 }
 
 /* -------------------- States -------------------- */
+
+/*
 .is-active {}
 
 .is-open {}
+*/
 
 .is-selected {
     outline: var(--focus-outline);
