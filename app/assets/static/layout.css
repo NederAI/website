@@ -51,6 +51,16 @@ a:hover {
     display: none !important;
 }
 
+/* -------------------- Text -------------------- */
+
+.c-text > * {
+    margin: 0 0 var(--space-4);
+}
+
+.c-text > :last-child {
+    margin: 0;
+}
+
 /* -------------------- Typography -------------------- */
 .t-kicker {
     text-transform: var(--kicker-case);
@@ -64,20 +74,17 @@ a:hover {
     line-height: var(--line-compact);
     font-weight: var(--weight-bold);
     max-width: var(--hero-maxw);
-    margin: 0;
 }
 
 .t-title {
     font-size: var(--font-size-6);
     line-height: var(--line-compact);
     font-weight: var(--weight-semibold);
-    margin: 0;
 }
 
 .t-subtitle {
     font-size: var(--font-size-4);
     color: var(--color-text-muted);
-    margin: 0;
 }
 
 .t-lead {
@@ -319,7 +326,7 @@ pre {
 }
 
 /* -------------------- Buttons -------------------- */
-.c-btn {
+.c-btn, a.c-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -337,49 +344,49 @@ pre {
     min-height: 2.5rem;
 }
 
-.c-btn:hover {
+.c-btn:hover, a.c-btn:hover {
     background: var(--btn-bg-hover);
 }
 
-.c-btn:active {
+.c-btn:active, a.c-btn:active {
     transform: translateY(1px);
 }
 
-.c-btn.is-loading {
+.c-btn.is-loading, a.c-btn.is-loading {
     pointer-events: none;
     opacity: var(--opacity-disabled);
 }
 
-.c-btn.is-disabled,
-.c-btn:disabled {
+.c-btn.is-disabled, a.c-btn.is-disabled,
+.c-btn:disabled, a.c-btn:disabled {
     opacity: var(--opacity-disabled);
     cursor: not-allowed;
 }
 
-.c-btn--secondary {
+.c-btn--secondary, a.c-btn--secondary {
     background: var(--color-surface);
     color: var(--color-text);
     border: var(--border);
 }
 
-.c-btn--tertiary {
+.c-btn--tertiary, a.c-btn--tertiary {
     background: transparent;
     color: var(--color-text);
     border: var(--border);
 }
 
-.c-btn--ghost {
+.c-btn--ghost, a.c-btn--ghost {
     background: transparent;
     color: var(--color-text);
     border: none;
 }
 
-.c-btn--destructive {
+.c-btn--destructive, a.c-btn--destructive {
     background: var(--color-danger);
     color: var(--color-danger-contrast);
 }
 
-.c-btn--link {
+.c-btn--link, a.c-btn--link {
     background: transparent;
     color: var(--color-link);
     border: none;
@@ -387,19 +394,19 @@ pre {
     min-height: auto;
 }
 
-.c-btn--sm {
+.c-btn--sm, a.c-btn--sm {
     padding: var(--size-sm-pad-y) var(--size-sm-pad-x);
     min-height: var(--size-sm-height);
     font-size: var(--font-size-0);
 }
 
-.c-btn--lg {
+.c-btn--lg, a.c-btn--lg {
     padding: var(--size-lg-pad-y) var(--size-lg-pad-x);
     min-height: var(--size-lg-height);
     font-size: var(--font-size-2);
 }
 
-.c-btn--icon {
+.c-btn--icon, a.c-btn--icon {
     width: var(--size-lg-height);
     min-width: var(--size-lg-height);
     aspect-ratio: 1 / 1;
@@ -521,7 +528,7 @@ pre {
     }
 }
 
-.c-hero__actions {
+.c-actions {
     display: flex;
     gap: var(--space-3);
     flex-wrap: wrap;
@@ -1303,6 +1310,7 @@ pre {
     border: var(--image-border);
     box-shadow: var(--image-shadow);
     background: var(--image-placeholder-bg);
+    margin: 0;
 }
 
 .c-imgbox>img {
