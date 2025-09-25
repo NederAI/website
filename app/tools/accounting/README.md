@@ -51,3 +51,7 @@ $ledger->createJournalEntry([
 ```
 
 The `trial_balance` view in PostgreSQL is available for reporting or API endpoints.
+
+## Intranet UI
+
+Accounting operations are also available via the internal UI at https://intranet.neder.ai (login required). Use your intranet credentials to work with the ledger, create journal entries, and inspect the trial balance there.
