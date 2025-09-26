@@ -4964,3 +4964,4 @@ INSERT INTO "rgs_3_7" ("id", "omschrijving", "parent_code", "referentiecode", "r
 (3165,	'Rekening-courant bank groep 10',	'BSchSakRbaBg1',	'BSchSakRbaBg10',	'BLimBanRbaBg10',	'M.B.A100',	'1209030.1',	'Rekening-courant bank groep 10',	'C',	5,	't',	't',	't',	'f',	'f',	't',	'f',	'f',	'f',	'f',	'f',	'f',	'f',	'f',	'f',	't',	't',	'f',	'f',	'f',	'f',	NULL),
 (3606,	'Netto resultaat exploitatie van vastgoedportefeuille',	'W',	'WRev',	NULL,	'O.J',	'80.1',	'Netto resultaat exploitatie van vastgoedportefeuille',	'C',	2,	'f',	'f',	'f',	'f',	't',	'f',	'f',	'f',	'f',	'f',	'f',	't',	'f',	'f',	'f',	'f',	'f',	'f',	'f',	'f',	'f',	0);
 
+ALTER TABLE ONLY "rgs"."rgs_3_7" ADD CONSTRAINT "3-7_parent_code_fkey" FOREIGN KEY (parent_code) REFERENCES rgs_3_7(referentiecode) NOT DEFERRABLE;
