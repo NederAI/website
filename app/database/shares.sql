@@ -1,48 +1,37 @@
+-- Share register schema for NederAI group.
+-- Requires shared.organisations to be present.
+
+DROP VIEW IF EXISTS "shareholder_position";
+DROP TABLE IF EXISTS "shareholder_position";
+
+DROP TABLE IF EXISTS "share_event";
+DROP SEQUENCE IF EXISTS share_event_share_event_id_seq;
+CREATE SEQUENCE share_event_share_event_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1;
+
+DROP TABLE IF EXISTS "share_class";
+DROP SEQUENCE IF EXISTS share_class_share_class_id_seq;
+CREATE SEQUENCE share_class_share_class_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1;
+
 DROP TABLE IF EXISTS "company";
 DROP SEQUENCE IF EXISTS company_company_id_seq;
 CREATE SEQUENCE company_company_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1;
 
 CREATE TABLE "shares"."company" (
     "company_id" bigint DEFAULT nextval('company_company_id_seq') NOT NULL,
-    "party_id" bigint NOT NULL,
+    "organisation_id" bigint NOT NULL,
     "legal_form" text NOT NULL,
     CONSTRAINT "company_pkey" PRIMARY KEY ("company_id"),
     CONSTRAINT "company_legal_form_check" CHECK (legal_form = ANY (ARRAY['BV'::text, 'Stichting'::text, 'NV'::text, 'CV'::text, 'VOF'::text, 'Other'::text]))
 )
 WITH (oids = false);
 
-CREATE UNIQUE INDEX company_party_id_key ON shares.company USING btree (party_id);
+CREATE UNIQUE INDEX company_organisation_id_key ON shares.company USING btree (organisation_id);
 
-INSERT INTO "company" ("company_id", "party_id", "legal_form") VALUES
+INSERT INTO "company" ("company_id", "organisation_id", "legal_form") VALUES
 (1,	1,	'Stichting'),
 (2,	2,	'BV'),
 (3,	3,	'BV'),
 (4,	4,	'BV');
-
-DROP TABLE IF EXISTS "party";
-DROP SEQUENCE IF EXISTS party_party_id_seq;
-CREATE SEQUENCE party_party_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1;
-
-CREATE TABLE "shares"."party" (
-    "party_id" bigint DEFAULT nextval('party_party_id_seq') NOT NULL,
-    "kind" text NOT NULL,
-    "name" text NOT NULL,
-    "kvk_number" text,
-    "country" text DEFAULT 'NL',
-    CONSTRAINT "party_pkey" PRIMARY KEY ("party_id"),
-    CONSTRAINT "party_kind_check" CHECK (kind = ANY (ARRAY['foundation'::text, 'company'::text, 'person'::text, 'other'::text]))
-)
-WITH (oids = false);
-
-INSERT INTO "party" ("party_id", "kind", "name", "kvk_number", "country") VALUES
-(1,	'foundation',	'Stichting NederAI',	NULL,	'NL'),
-(2,	'company',	'NederAI Alliance BV',	NULL,	'NL'),
-(3,	'company',	'NederAI Institute BV',	NULL,	'NL'),
-(4,	'company',	'NederAI Commercial BV',	NULL,	'NL');
-
-DROP TABLE IF EXISTS "share_class";
-DROP SEQUENCE IF EXISTS share_class_share_class_id_seq;
-CREATE SEQUENCE share_class_share_class_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1;
 
 CREATE TABLE "shares"."share_class" (
     "share_class_id" bigint DEFAULT nextval('share_class_share_class_id_seq') NOT NULL,
@@ -64,10 +53,6 @@ INSERT INTO "share_class" ("share_class_id", "company_id", "code", "description"
 (1,	2,	'A',	'Gewone aandelen Alliance',	1.000000,	'EUR',	't',	't'),
 (2,	3,	'A',	'Gewone aandelen Institute',	1.000000,	'EUR',	't',	't'),
 (3,	4,	'A',	'Gewone aandelen Commercial',	1.000000,	'EUR',	't',	't');
-
-DROP TABLE IF EXISTS "share_event";
-DROP SEQUENCE IF EXISTS share_event_share_event_id_seq;
-CREATE SEQUENCE share_event_share_event_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1;
 
 CREATE TABLE "shares"."share_event" (
     "share_event_id" bigint DEFAULT nextval('share_event_share_event_id_seq') NOT NULL,
@@ -98,18 +83,17 @@ INSERT INTO "share_event" ("share_event_id", "company_id", "share_class_id", "ev
 (2,	3,	2,	'2025-01-02',	'ISSUE',	NULL,	2,	1000.000000,	1000.00,	NULL,	NULL,	'Akte oprichting Institute',	NULL,	NULL),
 (3,	4,	3,	'2025-01-02',	'ISSUE',	NULL,	2,	1000.000000,	1000.00,	NULL,	NULL,	'Akte oprichting Commercial',	NULL,	NULL);
 
-DROP VIEW IF EXISTS "shareholder_position";
 CREATE TABLE "shareholder_position" ("company_id" bigint, "share_class_id" bigint, "party_id" bigint, "quantity" numeric);
 
 
-ALTER TABLE ONLY "shares"."company" ADD CONSTRAINT "company_party_id_fkey" FOREIGN KEY (party_id) REFERENCES party(party_id) NOT DEFERRABLE;
+ALTER TABLE ONLY "shares"."company" ADD CONSTRAINT "company_organisation_id_fkey" FOREIGN KEY (organisation_id) REFERENCES shared.organisations(organisation_id) ON UPDATE CASCADE ON DELETE RESTRICT NOT DEFERRABLE;
 
 ALTER TABLE ONLY "shares"."share_class" ADD CONSTRAINT "share_class_company_id_fkey" FOREIGN KEY (company_id) REFERENCES company(company_id) ON DELETE CASCADE NOT DEFERRABLE;
 
 ALTER TABLE ONLY "shares"."share_event" ADD CONSTRAINT "share_event_company_id_fkey" FOREIGN KEY (company_id) REFERENCES company(company_id) ON DELETE CASCADE NOT DEFERRABLE;
-ALTER TABLE ONLY "shares"."share_event" ADD CONSTRAINT "share_event_from_party_id_fkey" FOREIGN KEY (from_party_id) REFERENCES party(party_id) NOT DEFERRABLE;
+ALTER TABLE ONLY "shares"."share_event" ADD CONSTRAINT "share_event_from_party_id_fkey" FOREIGN KEY (from_party_id) REFERENCES shared.organisations(organisation_id) ON UPDATE CASCADE ON DELETE RESTRICT NOT DEFERRABLE;
 ALTER TABLE ONLY "shares"."share_event" ADD CONSTRAINT "share_event_share_class_id_fkey" FOREIGN KEY (share_class_id) REFERENCES share_class(share_class_id) ON DELETE RESTRICT NOT DEFERRABLE;
-ALTER TABLE ONLY "shares"."share_event" ADD CONSTRAINT "share_event_to_party_id_fkey" FOREIGN KEY (to_party_id) REFERENCES party(party_id) NOT DEFERRABLE;
+ALTER TABLE ONLY "shares"."share_event" ADD CONSTRAINT "share_event_to_party_id_fkey" FOREIGN KEY (to_party_id) REFERENCES shared.organisations(organisation_id) ON UPDATE CASCADE ON DELETE RESTRICT NOT DEFERRABLE;
 
 DROP TABLE IF EXISTS "shareholder_position";
 CREATE VIEW "shareholder_position" AS WITH legs AS (
