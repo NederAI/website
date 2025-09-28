@@ -31,6 +31,11 @@ class HtmlController extends BaseController {
      * @return bool True if handled; otherwise false.
      */
     public function handle($request): bool {
+        if (!empty($request['is_intranet'])) {
+            $this->delegateRoute('/', \App\Controllers\Intranet\Html\RouterController::class, $request);
+            return true;
+        }
+
         $this->file = $this->container->get(File::class);
         $this->templater = $this->container->get(SimpleTemplater::class);
         $this->mdToHtml = $this->container->get(SimpleMarkdownHtml::class);

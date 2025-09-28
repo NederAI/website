@@ -3,9 +3,6 @@ namespace App\Controllers;
 
 use Core\BaseController;
 
-use App\Controllers\ApiController;
-use App\Controllers\IntranetController;
-
 class FrontController extends BaseController {
 
     /**
@@ -32,11 +29,6 @@ class FrontController extends BaseController {
 
         $this->delegateRoute('/assets', AssetsController::class, $request);
         $this->delegateRoute('/api', ApiController::class, $request);
-
-        if ($isIntranet) {
-            $this->delegateRoute('/', IntranetController::class, $request);
-        }
-
         $this->delegateRoute('/', HtmlController::class, $request);
 
         header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
