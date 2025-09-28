@@ -22,9 +22,6 @@ class IntranetController extends BaseController {
 
         $this->delegateRoute('/login!', [$this, 'login'], $request);
         $this->delegateRoute('/logout!', [$this, 'logout'], $request);
-        $this->delegateRoute('/accounting/create-account!', [$this, 'createAccount'], $request);
-        $this->delegateRoute('/accounting/create-entry!', [$this, 'createJournalEntry'], $request);
-        $this->delegateRoute('/accounting!', [$this, 'accountingDashboard'], $request);
 
         return $this->dashboard($request);
     }
@@ -111,103 +108,6 @@ class IntranetController extends BaseController {
         return true;
     }
 
-    public function accountingDashboard($request): bool {
-        $this->requireAuth();
-        $payload = [
-            'user' => $this->user,
-            'accounts' => $this->fetchAccounts(),
-            'trialBalance' => $this->fetchTrialBalance(),
-            'entries' => $this->fetchRecentEntries(),
-            'flash' => $this->consumeFlash(),
-        ];
-
-        $body = '<div id="app-root"></div>';
-        $scripts = $this->appScripts($payload);
-        $this->renderLayout('Boekhouding', $body, 'accounting', $scripts);
-        return true;
-    }
-
-    public function createAccount($request): bool {
-        $this->requireAuth();
-        if ($request['method'] !== 'POST') {
-            $this->redirect('/accounting');
-            return true;
-        }
-        $data = is_array($request['body']) ? $request['body'] : $_POST;
-        try {
-            $service = $this->container->get(AccountingService::class);
-            $account = $service->ensureAccount([
-                'code' => $data['code'] ?? '',
-                'name' => $data['name'] ?? '',
-                'rgs_code' => $data['rgs_code'] ?? null,
-                'account_type' => $data['account_type'] ?? null,
-                'currency' => $data['currency'] ?? 'EUR',
-            ]);
-
-            if ($this->isAjax($request)) {
-                $this->json(['success' => true, 'account' => $account]);
-                return true;
-            }
-
-            $this->setFlash('Rekening opgeslagen.');
-        } catch (InvalidArgumentException $e) {
-            if ($this->isAjax($request)) {
-                $this->json(['success' => false, 'error' => $e->getMessage()], 400);
-                return true;
-            }
-            $this->setFlash('Fout: ' . $e->getMessage());
-        } catch (\Throwable $e) {
-            if ($this->isAjax($request)) {
-                $this->json(['success' => false, 'error' => 'Onbekende fout bij opslaan van rekening.'], 500);
-                return true;
-            }
-            $this->setFlash('Onbekende fout bij opslaan van rekening.');
-        }
-        $this->redirect('/accounting');
-        return true;
-    }
-
-    public function createJournalEntry($request): bool {
-        $this->requireAuth();
-        if ($request['method'] !== 'POST') {
-            $this->redirect('/accounting');
-            return true;
-        }
-        $data = is_array($request['body']) ? $request['body'] : $_POST;
-        $lines = isset($data['lines']) && is_array($data['lines']) ? $data['lines'] : [];
-        try {
-            $service = $this->container->get(AccountingService::class);
-            $entry = $service->createJournalEntry([
-                'journal_code' => $data['journal_code'] ?? 'MEM',
-                'journal_name' => $data['journal_code'] ?? 'MEM',
-                'entry_date' => $data['entry_date'] ?? null,
-                'reference' => $data['reference'] ?? null,
-                'description' => $data['description'] ?? null,
-            ], $lines, true);
-
-            if ($this->isAjax($request)) {
-                $this->json(['success' => true, 'entry' => $entry]);
-                return true;
-            }
-
-            $this->setFlash('Boeking aangemaakt en geboekt.');
-        } catch (InvalidArgumentException $e) {
-            if ($this->isAjax($request)) {
-                $this->json(['success' => false, 'error' => $e->getMessage()], 400);
-                return true;
-            }
-            $this->setFlash('Fout: ' . $e->getMessage());
-        } catch (\Throwable $e) {
-            if ($this->isAjax($request)) {
-                $this->json(['success' => false, 'error' => 'Onbekende fout bij boeken.'], 500);
-                return true;
-            }
-            $this->setFlash('Onbekende fout bij boeken.');
-        }
-        $this->redirect('/accounting');
-        return true;
-    }
-
     private function requireAuth(): void {
         if (!$this->user) {
             $this->redirect('/login');
@@ -285,25 +185,5 @@ class IntranetController extends BaseController {
         $message = $_SESSION['flash'];
         unset($_SESSION['flash']);
         return $message;
-    }
-
-    private function fetchAccounts(): array {
-        $stmt = $this->pdo->query('SELECT code, name, account_type, rgs_code, currency FROM accounting.ledger_accounts ORDER BY code');
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    private function fetchTrialBalance(): array {
-        $stmt = $this->pdo->query('SELECT account_code, account_name, total_debit, total_credit, balance FROM accounting.trial_balance ORDER BY account_code');
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    private function fetchRecentEntries(): array {
-        $sql = 'SELECT je.entry_date, j.code AS journal_code, je.reference, je.status, je.description
-                FROM accounting.journal_entries je
-                JOIN accounting.journals j ON je.journal_id = j.id
-                ORDER BY je.entry_date DESC, je.id DESC
-                LIMIT 10';
-        $stmt = $this->pdo->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
