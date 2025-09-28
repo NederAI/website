@@ -1,21 +1,53 @@
+BEGIN;
+
 -- General ledger structure with NL RGS alignment fields.
 CREATE SCHEMA IF NOT EXISTS accounting;
 
-CREATE TYPE IF NOT EXISTS accounting.account_kind AS ENUM (
-    'balance',
-    'result'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'accounting' AND t.typname = 'account_kind'
+    ) THEN
+        CREATE TYPE accounting.account_kind AS ENUM (
+            'balance',
+            'result'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
-CREATE TYPE IF NOT EXISTS accounting.normal_side AS ENUM (
-    'debit',
-    'credit'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'accounting' AND t.typname = 'normal_side'
+    ) THEN
+        CREATE TYPE accounting.normal_side AS ENUM (
+            'debit',
+            'credit'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
-CREATE TYPE IF NOT EXISTS accounting.batch_status AS ENUM (
-    'open',
-    'posted',
-    'archived'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'accounting' AND t.typname = 'batch_status'
+    ) THEN
+        CREATE TYPE accounting.batch_status AS ENUM (
+            'open',
+            'posted',
+            'archived'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
 CREATE TABLE IF NOT EXISTS accounting.accounts (
     account_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -116,3 +148,5 @@ BEGIN
     END IF;
 END;
 ';
+
+COMMIT;

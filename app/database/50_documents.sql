@@ -1,12 +1,24 @@
+BEGIN;
+
 -- Structured document storage links with retention metadata.
 CREATE SCHEMA IF NOT EXISTS documents;
 
-CREATE TYPE IF NOT EXISTS documents.classification_level AS ENUM (
-    'public',
-    'internal',
-    'confidential',
-    'restricted'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'documents' AND t.typname = 'classification_level'
+    ) THEN
+        CREATE TYPE documents.classification_level AS ENUM (
+            'public',
+            'internal',
+            'confidential',
+            'restricted'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
 CREATE TABLE IF NOT EXISTS documents.files (
     document_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -51,3 +63,5 @@ BEGIN
     END IF;
 END;
 ';
+
+COMMIT;

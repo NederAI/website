@@ -1,3 +1,5 @@
+BEGIN;
+
 -- Shared master data used across all NederAI modules.
 CREATE SCHEMA IF NOT EXISTS shared;
 
@@ -49,15 +51,25 @@ SET name = EXCLUDED.name,
     active = EXCLUDED.active,
     updated_at = NOW();
 
-CREATE TYPE IF NOT EXISTS shared.organisation_kind AS ENUM (
-    'foundation',
-    'company',
-    'public_body',
-    'circle',
-    'person',
-    'partner',
-    'other'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'shared' AND t.typname = 'organisation_kind'
+    ) THEN
+        CREATE TYPE shared.organisation_kind AS ENUM (
+            'foundation',
+            'company',
+            'public_body',
+            'circle',
+            'person',
+            'partner',
+            'other'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
 CREATE TABLE IF NOT EXISTS shared.organisations (
     organisation_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -156,3 +168,5 @@ BEGIN
     END IF;
 END;
 ';
+
+COMMIT;

@@ -1,29 +1,61 @@
+BEGIN;
+
 -- Compliance obligations and fulfilment tracking.
 CREATE SCHEMA IF NOT EXISTS compliance;
 
-CREATE TYPE IF NOT EXISTS compliance.obligation_kind AS ENUM (
-    'statutory_report',
-    'tax_filing',
-    'audit',
-    'policy_review',
-    'licence_renewal',
-    'other'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'compliance' AND t.typname = 'obligation_kind'
+    ) THEN
+        CREATE TYPE compliance.obligation_kind AS ENUM (
+            'statutory_report',
+            'tax_filing',
+            'audit',
+            'policy_review',
+            'licence_renewal',
+            'other'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
-CREATE TYPE IF NOT EXISTS compliance.obligation_status AS ENUM (
-    'active',
-    'suspended',
-    'retired'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'compliance' AND t.typname = 'obligation_status'
+    ) THEN
+        CREATE TYPE compliance.obligation_status AS ENUM (
+            'active',
+            'suspended',
+            'retired'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
-CREATE TYPE IF NOT EXISTS compliance.fulfilment_status AS ENUM (
-    'pending',
-    'submitted',
-    'accepted',
-    'rejected',
-    'waived',
-    'cancelled'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'compliance' AND t.typname = 'fulfilment_status'
+    ) THEN
+        CREATE TYPE compliance.fulfilment_status AS ENUM (
+            'pending',
+            'submitted',
+            'accepted',
+            'rejected',
+            'waived',
+            'cancelled'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
 CREATE TABLE IF NOT EXISTS compliance.obligations (
     obligation_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -78,3 +110,5 @@ BEGIN
     END IF;
 END;
 ';
+
+COMMIT;

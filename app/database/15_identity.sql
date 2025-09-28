@@ -1,12 +1,24 @@
+BEGIN;
+
 -- Identity and access management (IAM) primitives.
 CREATE SCHEMA IF NOT EXISTS identity;
 
-CREATE TYPE IF NOT EXISTS identity.account_status AS ENUM (
-    'pending',
-    'active',
-    'suspended',
-    'disabled'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'identity' AND t.typname = 'account_status'
+    ) THEN
+        CREATE TYPE identity.account_status AS ENUM (
+            'pending',
+            'active',
+            'suspended',
+            'disabled'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
 CREATE TABLE IF NOT EXISTS identity.accounts (
     account_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -48,3 +60,5 @@ BEGIN
     END IF;
 END;
 ';
+
+COMMIT;

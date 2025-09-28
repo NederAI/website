@@ -1,24 +1,46 @@
+BEGIN;
+
 -- Corporate registry data (roles, mandates, licences).
 CREATE SCHEMA IF NOT EXISTS registry;
 
-CREATE TYPE IF NOT EXISTS registry.role_type AS ENUM (
-    'director',
-    'executive',
-    'supervisor',
-    'representative',
-    'beneficial_owner',
-    'secretary',
-    'advisor',
-    'other'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'registry' AND t.typname = 'role_type'
+    ) THEN
+        CREATE TYPE registry.role_type AS ENUM (
+            'director',
+            'executive',
+            'supervisor',
+            'representative',
+            'beneficial_owner',
+            'secretary',
+            'advisor',
+            'other'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
-CREATE TYPE IF NOT EXISTS registry.role_status AS ENUM (
-    'active',
-    'pending',
-    'resigned',
-    'suspended',
-    'terminated'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'registry' AND t.typname = 'role_status'
+    ) THEN
+        CREATE TYPE registry.role_status AS ENUM (
+            'active',
+            'pending',
+            'resigned',
+            'suspended',
+            'terminated'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
 CREATE TABLE IF NOT EXISTS registry.role_assignments (
     role_assignment_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -73,3 +95,5 @@ BEGIN
     END IF;
 END;
 ';
+
+COMMIT;

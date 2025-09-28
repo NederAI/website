@@ -1,21 +1,43 @@
+BEGIN;
+
 -- People and payroll registers with guarded personal data fields.
 CREATE SCHEMA IF NOT EXISTS hr;
 
-CREATE TYPE IF NOT EXISTS hr.employment_type AS ENUM (
-    'employee',
-    'contractor',
-    'temporary',
-    'board_member',
-    'intern'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'hr' AND t.typname = 'employment_type'
+    ) THEN
+        CREATE TYPE hr.employment_type AS ENUM (
+            'employee',
+            'contractor',
+            'temporary',
+            'board_member',
+            'intern'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
-CREATE TYPE IF NOT EXISTS hr.employment_status AS ENUM (
-    'active',
-    'on_leave',
-    'terminated',
-    'suspended',
-    'prospect'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'hr' AND t.typname = 'employment_status'
+    ) THEN
+        CREATE TYPE hr.employment_status AS ENUM (
+            'active',
+            'on_leave',
+            'terminated',
+            'suspended',
+            'prospect'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
 CREATE TABLE IF NOT EXISTS hr.employees (
     employee_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -107,3 +129,5 @@ BEGIN
     END IF;
 END;
 ';
+
+COMMIT;

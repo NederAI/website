@@ -19,3 +19,4 @@ Follow these conventions when modifying or extending the code:
 - Delegated routes are relative
 
 - Never inspect or rely on version control history; work only with the current repository state.
+- test any sql using `psql -U codex -h 127.0.0.1 -d postgres`, password `codex`

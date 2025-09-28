@@ -1,17 +1,29 @@
+BEGIN;
+
 -- Equity and certificate registers for the NederAI group.
 CREATE SCHEMA IF NOT EXISTS shares;
 
-CREATE TYPE IF NOT EXISTS shares.event_type AS ENUM (
-    'ISSUE',
-    'TRANSFER',
-    'CANCEL',
-    'SPLIT',
-    'CONSOLIDATE',
-    'PLEDGE',
-    'PLEDGE_RELEASE',
-    'USUFRUCT',
-    'USUFRUCT_RELEASE'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'shares' AND t.typname = 'event_type'
+    ) THEN
+        CREATE TYPE shares.event_type AS ENUM (
+            'ISSUE',
+            'TRANSFER',
+            'CANCEL',
+            'SPLIT',
+            'CONSOLIDATE',
+            'PLEDGE',
+            'PLEDGE_RELEASE',
+            'USUFRUCT',
+            'USUFRUCT_RELEASE'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
 CREATE TABLE IF NOT EXISTS shares.companies (
     company_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -111,3 +123,5 @@ BEGIN
     END IF;
 END;
 ';
+
+COMMIT;

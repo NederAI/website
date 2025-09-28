@@ -1,23 +1,45 @@
+BEGIN;
+
 -- Governance, meeting and decision registers.
 CREATE SCHEMA IF NOT EXISTS governance;
 
-CREATE TYPE IF NOT EXISTS governance.meeting_kind AS ENUM (
-    'board',
-    'supervisory_board',
-    'shareholder',
-    'circle',
-    'committee',
-    'executive',
-    'other'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'governance' AND t.typname = 'meeting_kind'
+    ) THEN
+        CREATE TYPE governance.meeting_kind AS ENUM (
+            'board',
+            'supervisory_board',
+            'shareholder',
+            'circle',
+            'committee',
+            'executive',
+            'other'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
-CREATE TYPE IF NOT EXISTS governance.meeting_status AS ENUM (
-    'scheduled',
-    'draft_minutes',
-    'approved',
-    'archived',
-    'cancelled'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'governance' AND t.typname = 'meeting_status'
+    ) THEN
+        CREATE TYPE governance.meeting_status AS ENUM (
+            'scheduled',
+            'draft_minutes',
+            'approved',
+            'archived',
+            'cancelled'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
 CREATE TABLE IF NOT EXISTS governance.meetings (
     meeting_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -53,23 +75,43 @@ CREATE TABLE IF NOT EXISTS governance.meeting_attendance (
     CONSTRAINT meeting_attendance_notes_object CHECK (JSONB_TYPEOF(notes) = 'object')
 );
 
-CREATE TYPE IF NOT EXISTS governance.resolution_type AS ENUM (
-    'policy',
-    'appointment',
-    'delegation',
-    'budget',
-    'project',
-    'other'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'governance' AND t.typname = 'resolution_type'
+    ) THEN
+        CREATE TYPE governance.resolution_type AS ENUM (
+            'policy',
+            'appointment',
+            'delegation',
+            'budget',
+            'project',
+            'other'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
-CREATE TYPE IF NOT EXISTS governance.resolution_status AS ENUM (
-    'draft',
-    'proposed',
-    'adopted',
-    'rejected',
-    'superseded',
-    'archived'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_type t
+        JOIN pg_namespace n ON n.oid = t.typnamespace
+        WHERE n.nspname = 'governance' AND t.typname = 'resolution_status'
+    ) THEN
+        CREATE TYPE governance.resolution_status AS ENUM (
+            'draft',
+            'proposed',
+            'adopted',
+            'rejected',
+            'superseded',
+            'archived'
+        );
+    END IF;
+END
+$$ LANGUAGE plpgsql;
 
 CREATE TABLE IF NOT EXISTS governance.resolutions (
     resolution_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -105,3 +147,5 @@ BEGIN
     END IF;
 END;
 ';
+
+COMMIT;
