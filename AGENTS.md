@@ -17,3 +17,5 @@ Follow these conventions when modifying or extending the code:
   - Report recoverable problems by throwing `Core\Error`; let the provided error handlers respond.
 - Keep implementations simple and transparent as described in `README.md`.
 - Delegated routes are relative
+
+- Never inspect or rely on version control history; work only with the current repository state.
