@@ -15,7 +15,7 @@ class RouterController extends BaseIntranetController {
     }
 
     public function bootstrap($request): bool {
-        if (!$this->ensureAuthenticatedJson()) {
+        if (!$this->ensureAuthenticatedJson($request)) {
             return true;
         }
 
@@ -24,6 +24,8 @@ class RouterController extends BaseIntranetController {
                 'id' => (int) $this->user['id'],
                 'email' => $this->user['email'],
                 'nickname' => $this->user['nickname'],
+                'roles' => $this->roles,
+                'last_seen_at' => $this->user['last_seen_at'] ?? null,
             ],
             'navigation' => $this->defaultNavigation(),
             'links' => [
@@ -36,11 +38,14 @@ class RouterController extends BaseIntranetController {
     }
 
     public function navigation($request): bool {
-        if (!$this->ensureAuthenticatedJson()) {
+        if (!$this->ensureAuthenticatedJson($request)) {
             return true;
         }
 
-        $this->json(['items' => $this->defaultNavigation()]);
+        $this->json([
+            'items' => $this->defaultNavigation(),
+            'roles' => $this->roles,
+        ]);
         return true;
     }
 

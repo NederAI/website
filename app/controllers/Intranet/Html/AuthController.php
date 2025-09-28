@@ -2,7 +2,6 @@
 namespace App\Controllers\Intranet\Html;
 
 use App\Controllers\Intranet\BaseIntranetController;
-use PDO;
 
 class AuthController extends BaseIntranetController {
     public function handle($request): bool {
@@ -26,18 +25,32 @@ class AuthController extends BaseIntranetController {
             $data = $_POST;
             $email = trim((string) ($data['email'] ?? ''));
             $password = (string) ($data['password'] ?? '');
+
             if ($email === '' || $password === '') {
                 $error = 'Vul e-mailadres en wachtwoord in.';
             } else {
-                $stmt = $this->pdo->prepare('SELECT id, password_hash, nickname FROM users WHERE email = :email');
-                $stmt->execute([':email' => $email]);
-                $user = $stmt->fetch(PDO::FETCH_ASSOC);
-                if ($user && password_verify($password, $user['password_hash'])) {
-                    session_regenerate_id(true);
-                    $_SESSION['user_id'] = (int) $user['id'];
-                    $this->redirect('/');
+                $context = [
+                    'ip' => $_SERVER['REMOTE_ADDR'] ?? null,
+                    'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
+                    'route' => $request['route'] ?? '/login',
+                    'method' => $request['method'] ?? 'POST',
+                    'source' => 'intranet-html',
+                ];
+
+                $verification = $this->accountService()->validateCredentials($email, $password, $context);
+                if ($verification['success'] ?? false) {
+                    $account = $this->accountService()->completeLogin($verification['account']['id'], $context);
+                    if (in_array('intranet.member', $account['roles'], true)) {
+                        session_regenerate_id(true);
+                        $_SESSION['user_id'] = (int) $account['id'];
+                        $this->logAccountEvent('login.web', ['nickname' => $account['nickname']]);
+                        $this->redirect('/');
+                    } else {
+                        $error = 'Je hebt geen toegang tot het intranet.';
+                    }
+                } else {
+                    $error = 'Ongeldige inloggegevens.';
                 }
-                $error = 'Ongeldige inloggegevens.';
             }
         }
 
@@ -47,12 +60,14 @@ class AuthController extends BaseIntranetController {
 
     private function logout(): bool {
         if ($this->isAuthenticated()) {
+            $this->logAccountEvent('logout', ['source' => 'intranet-html']);
             $_SESSION = [];
             if (ini_get('session.use_cookies')) {
                 $params = session_get_cookie_params();
                 setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
             }
             session_destroy();
+            session_regenerate_id(true);
         }
         $this->redirect('/login');
         return true;

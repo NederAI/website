@@ -6,13 +6,14 @@ use App\Controllers\Intranet\BaseIntranetController;
 class ShellController extends BaseIntranetController {
     public function handle($request): bool {
         $this->bootSession();
-        $this->requireAuthenticated();
+        $this->requireAuthenticated($request);
 
         $bootstrap = [
             'user' => [
                 'id' => (int) $this->user['id'],
                 'email' => $this->user['email'],
                 'nickname' => $this->user['nickname'],
+                'roles' => $this->roles,
             ],
         ];
         $json = json_encode($bootstrap, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
