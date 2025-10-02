@@ -30,11 +30,6 @@ body.paper-layout {
   gap: 0.75rem;
 }
 
-.paper-brand__logo {
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-}
-
 .paper-brand__text {
   display: flex;
   flex-direction: column;
@@ -44,7 +39,6 @@ body.paper-layout {
 .paper-brand__name {
   font-weight: 600;
   letter-spacing: 0.04em;
-  text-transform: uppercase;
 }
 
 .paper-brand__tagline {
@@ -101,7 +95,8 @@ body.paper-layout {
 
 .paper-main ul,
 .paper-main ol {
-  margin: 1.25rem 0 1.25rem 1.5rem;
+  margin: 1rem 0 1rem;
+  padding-left: 2rem;
 }
 
 .paper-main blockquote {
@@ -111,6 +106,52 @@ body.paper-layout {
   color: var(--paper-muted);
   font-style: italic;
 }
+
+.paper-main table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.95rem;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(47, 42, 37, 0.04);
+}
+
+.paper-main thead th {
+  background: #fff3ee;
+  color: var(--paper-text);
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.paper-main th,
+.paper-main td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--paper-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.paper-main tbody tr:nth-child(even) {
+  background: #fff8f3;
+}
+
+.paper-main caption {
+  caption-side: bottom;
+  text-align: left;
+  font-size: 0.85rem;
+  color: var(--paper-muted);
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 56rem) {
+  .paper-main table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 
 .paper-main a {
   color: var(--paper-accent);
@@ -155,6 +196,10 @@ body.paper-layout {
   font-style: italic;
 }
 
+@page {
+  margin: 18mm 20mm 24mm;
+}
+
 @media print {
   body.paper-layout {
     margin: 0;
@@ -173,4 +218,34 @@ body.paper-layout {
   .paper-index__list a {
     border-color: transparent;
   }
+
+  .paper-main h2,
+  .paper-main h3,
+  .paper-main h4 {
+    break-after: avoid;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  .paper-main table,
+  .paper-main blockquote,
+  .paper-main pre,
+  .paper-main figure,
+  .paper-main section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .paper-main table tr,
+  .paper-main table td,
+  .paper-main table th {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .paper-main p {
+    orphans: 3;
+    widows: 3;
+  }
+
 }

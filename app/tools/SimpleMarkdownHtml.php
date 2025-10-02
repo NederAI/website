@@ -56,8 +56,12 @@ class SimpleMarkdownHtml
             }
         };
 
-        // Process each line with some look‐ahead behavior.
-        foreach ($lines as $line) {
+        // Process each line with some look-ahead behavior.
+        $skipUntil = -1;
+        foreach ($lines as $index => $line) {
+            if ($skipUntil >= 0 && $index <= $skipUntil) {
+                continue;
+            }
             // Remove any trailing whitespace.
             $trimmedLine = rtrim($line);
 
@@ -68,7 +72,7 @@ class SimpleMarkdownHtml
                 $flushList();
                 if (!$inCodeBlock) {
                     $inCodeBlock = true;
-                    $html .= "<pre><code>\n";
+                    $html .= "<pre><code>";
                 } else {
                     $inCodeBlock = false;
                     $html .= "</code></pre>\n";
@@ -79,6 +83,17 @@ class SimpleMarkdownHtml
             // If inside a code block, output verbatim.
             if ($inCodeBlock) {
                 $html .= htmlspecialchars($line) . "\n";
+                continue;
+            }
+
+            if ($this->looksLikeTableHeaderLine($trimmedLine) && isset($lines[$index + 1]) && $this->looksLikeTableDividerLine($lines[$index + 1])) {
+                $flushParagraph();
+                $flushList();
+                list($tableHtml, $consumedIndex) = $this->buildTable($lines, $index);
+                if ($tableHtml !== '') {
+                    $html .= $tableHtml;
+                }
+                $skipUntil = $consumedIndex;
                 continue;
             }
 
@@ -170,6 +185,193 @@ class SimpleMarkdownHtml
     }
 
     // Processes inline-level elements like bold, italic, and inline code.
+
+
+    private function looksLikeTableHeaderLine(string $line): bool
+    {
+        return $this->looksLikeTableRowLine($line);
+    }
+
+    private function looksLikeTableDividerLine(string $line): bool
+    {
+        $line = trim($line);
+        if ($line === '') {
+            return false;
+        }
+        if (strpos($line, '|') === 0) {
+            $line = substr($line, 1);
+        }
+        if (substr($line, -1) === '|') {
+            $line = substr($line, 0, -1);
+        }
+        $parts = explode('|', $line);
+        if (count($parts) < 1) {
+            return false;
+        }
+        foreach ($parts as $part) {
+            $part = trim($part);
+            if ($part === '') {
+                return false;
+            }
+            if (!preg_match('/^:?-{3,}:?$/', $part)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private function looksLikeTableRowLine(string $line): bool
+    {
+        $line = trim($line);
+        if ($line === '') {
+            return false;
+        }
+        if (strpos($line, '|') === false) {
+            return false;
+        }
+        return preg_match('/^\|?.*\|.*\|?$/', $line) === 1;
+    }
+
+    private function buildTable(array $lines, int $startIndex): array
+    {
+        $headerLine = $lines[$startIndex];
+        $dividerLine = $lines[$startIndex + 1] ?? '';
+        $headerCells = $this->splitTableRow($headerLine);
+        $columnCount = count($headerCells);
+        if ($columnCount === 0) {
+            return ['', $startIndex];
+        }
+        $alignments = $this->parseTableAlignments($dividerLine, $columnCount);
+
+        $bodyRows = [];
+        $lastIndex = $startIndex + 1;
+        $totalLines = count($lines);
+
+        for ($rowIndex = $startIndex + 2; $rowIndex < $totalLines; $rowIndex++) {
+            $candidate = $lines[$rowIndex];
+            if (trim($candidate) === '') {
+                break;
+            }
+            if (!$this->looksLikeTableRowLine($candidate)) {
+                break;
+            }
+            $cells = $this->splitTableRow($candidate);
+            if (count($cells) < $columnCount) {
+                $cells = array_pad($cells, $columnCount, '');
+            } elseif (count($cells) > $columnCount) {
+                $cells = array_slice($cells, 0, $columnCount);
+            }
+            $bodyRows[] = $cells;
+            $lastIndex = $rowIndex;
+        }
+
+        $tableHtml = "<table>
+<thead>
+<tr>";
+        foreach ($headerCells as $idx => $cell) {
+            $tableHtml .= $this->renderTableCell('th', $cell, $alignments[$idx] ?? null);
+        }
+        $tableHtml .= "</tr>
+</thead>
+<tbody>
+";
+
+        foreach ($bodyRows as $row) {
+            $tableHtml .= "<tr>";
+            foreach ($row as $idx => $cell) {
+                $tableHtml .= $this->renderTableCell('td', $cell, $alignments[$idx] ?? null);
+            }
+            $tableHtml .= "</tr>
+";
+        }
+
+        $tableHtml .= "</tbody>
+</table>
+";
+
+        return [$tableHtml, $lastIndex];
+    }
+
+    private function splitTableRow(string $line): array
+    {
+        $line = trim($line);
+        if ($line === '') {
+            return [];
+        }
+
+        $placeholder = '__PIPE_ESC__';
+        $line = str_replace('\|', $placeholder, $line);
+
+        if (strpos($line, '|') === 0) {
+            $line = substr($line, 1);
+        }
+        if (substr($line, -1) === '|') {
+            $line = substr($line, 0, -1);
+        }
+
+        $parts = explode('|', $line);
+        $cells = [];
+        foreach ($parts as $part) {
+            $part = trim(str_replace($placeholder, '|', $part));
+            $cells[] = $this->parseInline($part);
+        }
+        return $cells;
+    }
+
+    private function parseTableAlignments(string $line, int $columns): array
+    {
+        $line = trim($line);
+        if ($line === '') {
+            return array_fill(0, $columns, null);
+        }
+
+        if (strpos($line, '|') === 0) {
+            $line = substr($line, 1);
+        }
+        if (substr($line, -1) === '|') {
+            $line = substr($line, 0, -1);
+        }
+
+        $parts = explode('|', $line);
+        $alignments = [];
+        foreach ($parts as $part) {
+            $part = trim($part);
+            if ($part === '') {
+                $alignments[] = null;
+                continue;
+            }
+            $left = $part[0] === ':';
+            $right = substr($part, -1) === ':';
+            if ($left && $right) {
+                $alignments[] = 'center';
+            } elseif ($right) {
+                $alignments[] = 'right';
+            } elseif ($left) {
+                $alignments[] = 'left';
+            } else {
+                $alignments[] = null;
+            }
+        }
+
+        if (count($alignments) < $columns) {
+            $alignments = array_pad($alignments, $columns, null);
+        }
+        if (count($alignments) > $columns) {
+            $alignments = array_slice($alignments, 0, $columns);
+        }
+
+        return $alignments;
+    }
+
+    private function renderTableCell(string $tag, string $content, ?string $alignment): string
+    {
+        $attr = '';
+        if ($alignment !== null) {
+            $attr = ' style="text-align:' . $alignment . ';"';
+        }
+        return '<' . $tag . $attr . '>' . $content . '</' . $tag . '>';
+    }
+
     protected function parseInline(string $text): string
     {
         // Bold: **text**
