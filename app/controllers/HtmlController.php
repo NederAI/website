@@ -23,6 +23,8 @@ class HtmlController extends BaseController {
 
     // Menu markup snippet
     private string $menu = '';
+    // Footer markup snippet
+    private string $footer = '';
 
     /**
      * Handles HTML content requests.
@@ -49,8 +51,10 @@ class HtmlController extends BaseController {
         // load menu and pages
         $this->loadPages();
         $this->templater->assign('menu', $this->menu);
+        $this->templater->assign('footer', $this->footer);
 
         try {
+            $this->delegateRoute('/papers', [$this, 'displayPaperRoute'], $request);
             $this->delegateRoute('/readme!', [$this, 'displayReadme'], $request);
             $this->delegateRoute('/license!', [$this, 'displayLicense'], $request);
 
@@ -116,6 +120,114 @@ class HtmlController extends BaseController {
         die();
     }
 
+
+    public function displayPaperRoute($request): bool {
+        $papers = $this->getPaperIndex();
+        $subroute = $request['subroute'] ?? '';
+        $slug = trim($subroute, '/');
+
+        if ($slug === '') {
+            return $this->renderPaperIndex($papers);
+        }
+
+        if (strpos($slug, '/') !== false) {
+            throw new Error(
+                'user',
+                'Paper not found',
+                "Paper {$slug} not found",
+                ['slug' => $slug],
+                404
+            );
+        }
+
+        if (!isset($papers[$slug])) {
+            throw new Error(
+                'user',
+                'Paper not found',
+                "Paper {$slug} not found",
+                ['slug' => $slug],
+                404
+            );
+        }
+
+        return $this->renderPaper($papers[$slug]);
+    }
+
+    private function renderPaper(array $paper): bool {
+        $this->templater->setTemplate($this->file->read('app/assets/paper-template.html'));
+        $markdown = $this->file->read($paper['path']);
+        $content = '<article class="paper-article">' . $this->mdToHtml->parse($markdown) . '</article>';
+
+        $this->templater->assign('title', $paper['title']);
+        $this->templater->assign('description', 'Afdrukbare NederAI paper: ' . $paper['title']);
+        $this->templater->assign('content', $content);
+
+        header('Content-Type: text/html; charset=UTF-8');
+        echo $this->templater->render();
+        return true;
+    }
+
+    private function renderPaperIndex(array $papers): bool {
+        $this->templater->setTemplate($this->file->read('app/assets/paper-template.html'));
+
+        if (empty($papers)) {
+            $list = '<p class="paper-empty">Er zijn nog geen papers beschikbaar.</p>';
+        } else {
+            $items = [];
+            foreach ($papers as $paper) {
+                $title = htmlspecialchars($paper['title'], ENT_QUOTES, 'UTF-8');
+                $href = '/papers/' . rawurlencode($paper['slug']);
+                $items[] = '<li><a href="' . $href . '">' . $title . '</a></li>';
+            }
+            $list = '<ul class="paper-index__list">' . implode('', $items) . '</ul>';
+        }
+
+        $intro = '<p class="paper-index__intro">Selecteer een paper om de afdrukbare versie te bekijken.</p>';
+        $content = '<article class="paper-index"><h1>NederAI Papers</h1>' . $intro . $list . '</article>';
+
+        $this->templater->assign('title', 'NederAI Papers');
+        $this->templater->assign('description', 'Overzicht van afdrukbare NederAI papers.');
+        $this->templater->assign('content', $content);
+
+        header('Content-Type: text/html; charset=UTF-8');
+        echo $this->templater->render();
+        return true;
+    }
+
+    private function getPaperIndex(): array {
+        $directory = 'app/pages/papers';
+        if (!$this->file->exists($directory) || !$this->file->isDirectory($directory)) {
+            return [];
+        }
+
+        $entries = $this->file->listDirectory($directory);
+        $papers = [];
+        foreach ($entries as $entry) {
+            if (pathinfo($entry, PATHINFO_EXTENSION) !== 'md') {
+                continue;
+            }
+            $path = $directory . '/' . $entry;
+            $markdown = $this->file->read($path);
+            $slug = pathinfo($entry, PATHINFO_FILENAME);
+            $papers[$slug] = [
+                'slug' => $slug,
+                'title' => $this->extractPaperTitle($markdown),
+                'path' => $path,
+            ];
+        }
+
+        ksort($papers);
+        return $papers;
+    }
+
+    private function extractPaperTitle(string $markdown): string {
+        if (preg_match('/^\s*#\s+(.+)$/m', $markdown, $matches)) {
+            return trim($matches[1]);
+        }
+        return 'Untitled Paper';
+    }
+
+
     private function loadPages(): void {
         $files = $this->file->listDirectory('app/pages');
         foreach ($files as $name) {
@@ -124,6 +236,10 @@ class HtmlController extends BaseController {
             }
             if ($name === 'menu.html') {
                 $this->menu = $this->file->read('app/pages/' . $name);
+                continue;
+            }
+            if ($name === 'footer.html') {
+                $this->footer = $this->file->read('app/pages/' . $name);
                 continue;
             }
             $contents = $this->file->read('app/pages/' . $name);
